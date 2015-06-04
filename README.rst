@@ -21,6 +21,45 @@ Prerequisities
 4. A (Neutron) network with a pool of floating IP addresses available
 
 
+Deployment
+==========
+
+At the very least you have to need to specify your Atomic image, SSH keypair, external
+network and the number of hosts to deploy:
+
+::
+
+    heat stack-create my-atomic-cluster -f atomic-cluster.yaml \
+        -P server_image=Fedora-Cloud-Atomic-22 \
+        -P ssh_key_name=default \
+        -P external_network=external \
+        -P node_count=3
+
+You can run `heat output-show my-atomic-cluster host_ips` to get the list of IP
+address assigned to the hosts:
+
+::
+
+   [
+     "10.23.68.158",
+     "10.23.68.159",
+     "10.23.68.160",
+   ]
+
+Note that the name of the SSH user differs for various cloud images. It's
+`fedora` for Fedora images and `cloud-user` for the latest CentOS and RHEL.
+
+
+If you want to add your own (perhaps internal) DNS servers, pass into the
+`dns_nameserver` parameter separated by comas:
+
+::
+   heat stack-create my-atomic-cluster ... -P dns_nameserver=10.16.5.22,10.37.5.18
+
+By specifying both `rhn_username` and `rhn_password`, your RHEL hosts will be
+automatically registered (with `subscription-manager
+register --username=... --password=... --auto-attach`).
+
 Copyright
 =========
 
