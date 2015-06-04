@@ -10,7 +10,6 @@ parameters:
   ssh_key_name:
     type: string
     description: Name of the SSH keypair registered with Nova
-    default: default
     constraints:
     - custom_constraint: nova.keypair
 
