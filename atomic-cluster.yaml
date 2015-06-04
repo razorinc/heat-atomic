@@ -103,7 +103,27 @@ resources:
           rhn_username: {get_param: rhn_username}
           rhn_password: {get_param: rhn_password}
 
+  scale_up:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      auto_scaling_group_id: {get_resource: atomic_hosts}
+      adjustment_type: change_in_capacity
+      scaling_adjustment: 1
+
+  scale_down:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      auto_scaling_group_id: {get_resource: atomic_hosts}
+      adjustment_type: change_in_capacity
+      scaling_adjustment: -1
+
 outputs:
   host_ips:
     description: IP addresses of all the Atomic Hosts
     value: {get_attr: [atomic_hosts, outputs_list, ip_address]}
+  scale_up_url:
+    description: A URL that triggers a scale up event on HTTP POST
+    value: {get_attr: [scale_up, alarm_url]}
+  scale_down_url:
+    description: A URL that triggers a scale down event on HTTP POST
+    value: {get_attr: [scale_down, alarm_url]}
