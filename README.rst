@@ -27,8 +27,8 @@ Usage
 Deployment
 ----------
 
-At the very least you have to need to specify your Atomic image, SSH keypair, external
-network and the number of hosts to deploy:
+At the very least you have to need to specify your Atomic image, SSH keypair,
+external network and the number of hosts to deploy:
 
 ::
 
@@ -41,8 +41,8 @@ network and the number of hosts to deploy:
 Inventory
 ---------
 
-You can run `heat output-show my-atomic-cluster host_ips` to get the list of IP
-address assigned to the hosts:
+You can run ``heat output-show my-atomic-cluster host_ips`` to get the list of
+IP address assigned to the hosts:
 
 ::
 
@@ -53,13 +53,13 @@ address assigned to the hosts:
    ]
 
 Note that the name of the SSH user differs for various cloud images. It's
-`fedora` for Fedora images and `cloud-user` for the latest CentOS and RHEL.
+``fedora`` for Fedora images and ``cloud-user`` for the latest CentOS and RHEL.
 
 Custom DNS Servers
 ------------------
 
 If you want to add your own (perhaps internal) DNS servers, pass into the
-`dns_nameserver` parameter separated by comas:
+``dns_nameserver`` parameter separated by comas:
 
 ::
 
@@ -69,16 +69,16 @@ If you want to add your own (perhaps internal) DNS servers, pass into the
 RHN Registration
 ----------------
 
-By specifying both `rhn_username` and `rhn_password`, your RHEL hosts will be
-automatically registered (with `subscription-manager
-register --username=... --password=... --auto-attach`).
+By specifying both ``rhn_username`` and ``rhn_password``, your RHEL hosts will be
+automatically registered (with ``subscription-manager
+register --username=... --password=... --auto-attach``).
 
 
 Scaling
 -------
 
 There is no autoscaling set up in the templates, but you can change the cluster
-capacity manually by signalling the `scale_up` or `scale_down` resources:
+capacity manually by signalling the ``scale_up`` or ``scale_down`` resources:
 
 ::
 
@@ -87,7 +87,7 @@ capacity manually by signalling the `scale_up` or `scale_down` resources:
 
 These will add or remove a single host.
 
-You can also do a *stack update* and change the `node_count` parameter:
+You can also do a *stack update* and change the ``node_count`` parameter:
 
 ::
 
