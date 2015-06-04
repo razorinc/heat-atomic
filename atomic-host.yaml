@@ -1,0 +1,104 @@
+heat_template_version: 2014-10-16
+
+
+description: >
+  A single Atomic Host with the necessary resources for access and
+  configuration.
+
+
+parameters:
+
+  key_name:
+    type: string
+    constraints:
+    - custom_constraint: nova.keypair
+
+  image:
+    type: string
+    constraints:
+    - custom_constraint: glance.image
+
+  flavor:
+    type: string
+    constraints:
+    - custom_constraint: nova.flavor
+
+  external_network:
+    type: string
+    constraints:
+    - custom_constraint: neutron.network
+
+  fixed_network:
+    type: string
+    constraints:
+    - custom_constraint: neutron.network
+
+  fixed_subnet:
+    type: string
+    constraints:
+    - custom_constraint: neutron.subnet
+
+  rhn_username:
+    type: string
+
+  rhn_password:
+    type: string
+    hidden: true
+
+resources:
+
+  host:
+    type: OS::Nova::Server
+    properties:
+      image: {get_param: image}
+      flavor: {get_param: flavor}
+      key_name: {get_param: key_name}
+      networks:
+      - port: {get_resource: port}
+      admin_user: cloud-user
+      user_data_format: RAW
+      user_data: {get_resource: init}
+
+  init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: {get_resource: RHN_registration}
+
+  RHN_registration:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          params:
+            $rhn_username$: {get_param: rhn_username}
+            $rhn_password$: {get_param: rhn_password}
+          template: |
+            #!/bin/bash
+            set -eu
+            set -o pipefail
+            RHN_USERNAME=$rhn_username$
+            RHN_PASSWORD=$rhn_password$
+            if [ -n "$RHN_USERNAME" -a -n "$RHN_PASSWORD" ]; then
+                subscription-manager register --username="$RHN_USERNAME" --password="$RHN_PASSWORD" --auto-attach
+            fi
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: {get_param: fixed_network}
+      fixed_ips:
+      - subnet: {get_param: fixed_subnet}
+      replacement_policy: AUTO
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: {get_param: external_network}
+      port_id: {get_resource: port}
+
+
+outputs:
+  ip_address:
+    description: IP address of the Atomic Host
+    value: {get_attr: [floating_ip, floating_ip_address]}
