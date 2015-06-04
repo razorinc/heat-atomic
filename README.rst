@@ -55,9 +55,8 @@ address assigned to the hosts:
 Note that the name of the SSH user differs for various cloud images. It's
 `fedora` for Fedora images and `cloud-user` for the latest CentOS and RHEL.
 
-
-RHN Registration
-----------------
+Custom DNS Servers
+------------------
 
 If you want to add your own (perhaps internal) DNS servers, pass into the
 `dns_nameserver` parameter separated by comas:
@@ -65,6 +64,10 @@ If you want to add your own (perhaps internal) DNS servers, pass into the
 ::
 
    heat stack-create my-atomic-cluster ... -P dns_nameserver=10.16.5.22,10.37.5.18
+
+
+RHN Registration
+----------------
 
 By specifying both `rhn_username` and `rhn_password`, your RHEL hosts will be
 automatically registered (with `subscription-manager
