@@ -60,6 +60,28 @@ By specifying both `rhn_username` and `rhn_password`, your RHEL hosts will be
 automatically registered (with `subscription-manager
 register --username=... --password=... --auto-attach`).
 
+
+There is no autoscaling set up in the templates, but you can change the cluster
+capacity manually by signalling the `scale_up` or `scale_down` resources:
+
+::
+
+   heat resource-signal my-atomic-cluster scale_up
+   heat resource-signal my-atomic-cluster scale_down
+
+These will add or remove a single host.
+
+You can also do a *stack update* and change the `node_count` parameter:
+
+::
+
+    heat stack-update my-atomic-cluster -f atomic-cluster.yaml \
+        -P server_image=Fedora-Cloud-Atomic-22 \
+        -P ssh_key_name=default \
+        -P external_network=external \
+        -P node_count=4
+
+
 Copyright
 =========
 
