@@ -4,9 +4,9 @@ An Atomic cluster with Heat
 
 These Heat_ templates will deploy a cluster of Atomic_ hosts.
 
-.. _Heat https://wiki.openstack.org/wiki/Heat
+.. _Heat: https://wiki.openstack.org/wiki/Heat
 
-.. _Atomic http://www.projectatomic.io/
+.. _Atomic: http://www.projectatomic.io/
 
 
 Prerequisities
@@ -49,7 +49,7 @@ address assigned to the hosts:
    [
      "10.23.68.158",
      "10.23.68.159",
-     "10.23.68.160",
+     "10.23.68.160"
    ]
 
 Note that the name of the SSH user differs for various cloud images. It's
@@ -63,6 +63,7 @@ If you want to add your own (perhaps internal) DNS servers, pass into the
 `dns_nameserver` parameter separated by comas:
 
 ::
+
    heat stack-create my-atomic-cluster ... -P dns_nameserver=10.16.5.22,10.37.5.18
 
 By specifying both `rhn_username` and `rhn_password`, your RHEL hosts will be
