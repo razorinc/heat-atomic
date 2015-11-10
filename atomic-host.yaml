@@ -79,6 +79,17 @@ resources:
       parts:
       - config: {get_resource: RHN_registration}
       - config: {get_resource: cockpit_service}
+      - config: {get_resource: activate_password_sshd}
+
+
+  activate_password_sshd:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config: |
+        #!/bin/bash
+        echo "Running boot script"
+        sudo sed -i.original -e '/PasswordAuthentication/s/no/yes/' /etc/ssh/sshd_config
 
 
   cockpit_service:
